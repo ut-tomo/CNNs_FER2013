@@ -38,7 +38,7 @@ def load_images_from_directory(base_dir, image_size=(48, 48)):
     y = np.array(y, dtype=np.int64)
     return X, y
 
-def load_fer2013(data_root="../myLeNet_FER2013", image_size=(48, 48)):
+def load_fer2013(data_root="../", image_size=(48, 48)):
     train_dir = os.path.join(data_root, "train")
     test_dir = os.path.join(data_root, "test")
 
@@ -144,4 +144,40 @@ def init_lenet_params():
     params['W4'] = he_init((84, 7))
     params['b4'] = np.zeros(7)
 
+    return params
+
+def init_vgg_params():
+    params = {}
+    params['W1'] = he_init((64, 1, 3, 3))
+    params['b1'] = np.zeros(64)
+    params['W2'] = he_init((64, 64, 3, 3))
+    params['b2'] = np.zeros(64)
+
+    params['W3'] = he_init((128, 64, 3, 3))
+    params['b3'] = np.zeros(128)
+    params['W4'] = he_init((128, 128, 3, 3))
+    params['b4'] = np.zeros(128)
+    
+    params['W5'] = he_init((18432, 256))
+    params['b5'] = np.zeros(256)
+    params['W6'] = he_init((256, 7))
+    params['b6'] = np.zeros(7)
+    return params
+
+def init_resnet_params():
+    params = {}
+    params['W1'] = he_init((64, 1, 3, 3))
+    params['b1'] = np.zeros(64)
+    params['W2'] = he_init((64, 64, 3, 3))
+    params['b2'] = np.zeros(64)
+
+    params['W3'] = he_init((64, 64, 3, 3))
+    params['b3'] = np.zeros(64)
+    params['W4'] = he_init((64, 64, 3, 3))
+    params['b4'] = np.zeros(64)
+
+    params['W5'] = he_init((9216, 128))
+    params['b5'] = np.zeros(128)
+    params['W6'] = he_init((128, 7))
+    params['b6'] = np.zeros(7)
     return params
