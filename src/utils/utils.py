@@ -166,18 +166,39 @@ def init_vgg_params():
 
 def init_resnet_params():
     params = {}
+
+    # Block1: 64→64
     params['W1'] = he_init((64, 1, 3, 3))
     params['b1'] = np.zeros(64)
     params['W2'] = he_init((64, 64, 3, 3))
     params['b2'] = np.zeros(64)
 
-    params['W3'] = he_init((64, 64, 3, 3))
-    params['b3'] = np.zeros(64)
-    params['W4'] = he_init((64, 64, 3, 3))
-    params['b4'] = np.zeros(64)
+    # Block2: 64→128 (proj: 1x1 conv)
+    params['W3'] = he_init((128, 64, 3, 3))
+    params['b3'] = np.zeros(128)
+    params['W4'] = he_init((128, 128, 3, 3))
+    params['b4'] = np.zeros(128)
+    params['W_proj1'] = he_init((128, 64, 1, 1))  # 1×1 conv
+    params['b_proj1'] = np.zeros(128)
 
-    params['W5'] = he_init((9216, 128))
-    params['b5'] = np.zeros(128)
-    params['W6'] = he_init((128, 7))
-    params['b6'] = np.zeros(7)
+    # Block3: 128→256 (proj)
+    params['W5'] = he_init((256, 128, 3, 3))
+    params['b5'] = np.zeros(256)
+    params['W6'] = he_init((256, 256, 3, 3))
+    params['b6'] = np.zeros(256)
+    params['W_proj2'] = he_init((256, 128, 1, 1))
+    params['b_proj2'] = np.zeros(256)
+
+    # Block4: 256→512 (proj)
+    params['W7'] = he_init((512, 256, 3, 3))
+    params['b7'] = np.zeros(512)
+    params['W8'] = he_init((512, 512, 3, 3))
+    params['b8'] = np.zeros(512)
+    params['W_proj3'] = he_init((512, 256, 1, 1))
+    params['b_proj3'] = np.zeros(512)
+
+    # FC: Global AvgPool後 → 512 → 7クラス
+    params['W9'] = he_init((512, 7))
+    params['b9'] = np.zeros(7)
+
     return params

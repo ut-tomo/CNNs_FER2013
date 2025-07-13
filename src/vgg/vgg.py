@@ -109,4 +109,3 @@ class VGGNet:
         return grads
 
 
-# ---- ResNet18-Simplified with BatchNorm ----
