@@ -147,6 +147,7 @@ def init_lenet_params():
     return params
 
 def init_vgg_params():
+    """
     params = {}
     params['W1'] = he_init((64, 1, 3, 3))
     params['b1'] = np.zeros(64)
@@ -163,42 +164,85 @@ def init_vgg_params():
     params['W6'] = he_init((256, 7))
     params['b6'] = np.zeros(7)
     return params
+    """
+    params = {}
+    params['W1'] = he_init((8, 1, 3, 3))    # Conv1
+    params['b1'] = np.zeros(8)
+    params['W2'] = he_init((8, 8, 3, 3))    # Conv2
+    params['b2'] = np.zeros(8)
+
+    params['W3'] = he_init((16, 8, 3, 3))   # Conv3
+    params['b3'] = np.zeros(16)
+    params['W4'] = he_init((16, 16, 3, 3))  # Conv4
+    params['b4'] = np.zeros(16)
+
+    # 入力画像48x48 → pool(2) → 24x24 → conv→conv → pool(2) → 12x12
+    # flattenサイズ = 16×12×12 = 2304
+    params['W5'] = he_init((2304, 64))  # FC1
+    params['b5'] = np.zeros(64)
+    params['W6'] = he_init((64, 7))     # FC2
+    params['b6'] = np.zeros(7)
+
+    return params
 
 def init_resnet_params():
     params = {}
+    # Stem conv (7x7)
+    params['W0'] = he_init((16, 1, 7, 7))
+    params['b0'] = np.zeros(16)
 
-    # Block1: 64→64
-    params['W1'] = he_init((64, 1, 3, 3))
-    params['b1'] = np.zeros(64)
-    params['W2'] = he_init((64, 64, 3, 3))
-    params['b2'] = np.zeros(64)
+    # Layer1: 2 blocks, 16 → 16
+    params['W1'] = he_init((16, 16, 3, 3))
+    params['b1'] = np.zeros(16)
+    params['W2'] = he_init((16, 16, 3, 3))
+    params['b2'] = np.zeros(16)
 
-    # Block2: 64→128 (proj: 1x1 conv)
-    params['W3'] = he_init((128, 64, 3, 3))
-    params['b3'] = np.zeros(128)
-    params['W4'] = he_init((128, 128, 3, 3))
-    params['b4'] = np.zeros(128)
-    params['W_proj1'] = he_init((128, 64, 1, 1))  # 1×1 conv
-    params['b_proj1'] = np.zeros(128)
+    params['W3'] = he_init((16, 16, 3, 3))
+    params['b3'] = np.zeros(16)
+    params['W4'] = he_init((16, 16, 3, 3))
+    params['b4'] = np.zeros(16)
 
-    # Block3: 128→256 (proj)
-    params['W5'] = he_init((256, 128, 3, 3))
-    params['b5'] = np.zeros(256)
-    params['W6'] = he_init((256, 256, 3, 3))
-    params['b6'] = np.zeros(256)
-    params['W_proj2'] = he_init((256, 128, 1, 1))
-    params['b_proj2'] = np.zeros(256)
+    # Layer2: 2 blocks, 16 → 32
+    params['W5'] = he_init((32, 16, 3, 3))
+    params['b5'] = np.zeros(32)
+    params['W6'] = he_init((32, 32, 3, 3))
+    params['b6'] = np.zeros(32)
+    params['W_proj1'] = he_init((32, 16, 1, 1))
+    params['b_proj1'] = np.zeros(32)
 
-    # Block4: 256→512 (proj)
-    params['W7'] = he_init((512, 256, 3, 3))
-    params['b7'] = np.zeros(512)
-    params['W8'] = he_init((512, 512, 3, 3))
-    params['b8'] = np.zeros(512)
-    params['W_proj3'] = he_init((512, 256, 1, 1))
-    params['b_proj3'] = np.zeros(512)
+    params['W7'] = he_init((32, 32, 3, 3))
+    params['b7'] = np.zeros(32)
+    params['W8'] = he_init((32, 32, 3, 3))
+    params['b8'] = np.zeros(32)
 
-    # FC: Global AvgPool後 → 512 → 7クラス
-    params['W9'] = he_init((512, 7))
-    params['b9'] = np.zeros(7)
+    # Layer3: 2 blocks, 32 → 64
+    params['W9'] = he_init((64, 32, 3, 3))
+    params['b9'] = np.zeros(64)
+    params['W10'] = he_init((64, 64, 3, 3))
+    params['b10'] = np.zeros(64)
+    params['W_proj2'] = he_init((64, 32, 1, 1))
+    params['b_proj2'] = np.zeros(64)
+
+    params['W11'] = he_init((64, 64, 3, 3))
+    params['b11'] = np.zeros(64)
+    params['W12'] = he_init((64, 64, 3, 3))
+    params['b12'] = np.zeros(64)
+
+    # Layer4: 2 blocks, 64 → 128
+    params['W13'] = he_init((128, 64, 3, 3))
+    params['b13'] = np.zeros(128)
+    params['W14'] = he_init((128, 128, 3, 3))
+    params['b14'] = np.zeros(128)
+    params['W_proj3'] = he_init((128, 64, 1, 1))
+    params['b_proj3'] = np.zeros(128)
+
+    params['W15'] = he_init((128, 128, 3, 3))
+    params['b15'] = np.zeros(128)
+    params['W16'] = he_init((128, 128, 3, 3))
+    params['b16'] = np.zeros(128)
+
+    # FC
+    params['W17'] = he_init((128, 7))
+    params['b17'] = np.zeros(7)
 
     return params

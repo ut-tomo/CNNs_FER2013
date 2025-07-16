@@ -8,6 +8,7 @@ from layers.activations import Relu
 from layers.batchnorm import BatchNorm
 from utils.utils import flatten, unflatten
 
+
 class VGGNet:
     def __init__(self, params):
         self.params = params
